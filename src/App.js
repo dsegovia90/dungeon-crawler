@@ -34,28 +34,28 @@ class App extends React.Component {
 
 	handleKeydown(e){
 		switch(e.code){
-			case 'ArrowRight':
+			case 'ArrowDown':
 				if(this.state.playerXcoord + 1 < this.state.map.length){ //verify that player coord + 1 does not exit map
 					if((this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] || 0) === 1){ //verify that player coord + 1 if a walkable tile
 						this.movePlayer(1,0) //changes state
 					}
 				}
 				break
-			case 'ArrowDown':
+			case 'ArrowRight':
 				if(this.state.playerYcoord + 1 < this.state.map.length){ //verify that player coord + 1 does not exit map
 					if((this.state.map[this.state.playerXcoord][this.state.playerYcoord + 1] || 0) === 1){ //verify that player coord + 1 if a walkable tile
 						this.movePlayer(0,1) //changes state
 					}
 				}
 				break
-			case 'ArrowLeft':
+			case 'ArrowUp':
 				if(this.state.playerXcoord - 1 >= 0){ //verify that player coord + 1 does not exit map
 					if((this.state.map[this.state.playerXcoord - 1][this.state.playerYcoord] || 0) === 1){ //verify that player coord + 1 if a walkable tile
 						this.movePlayer(-1,0) //changes state
 					}
 				}
 				break
-			case 'ArrowUp':
+			case 'ArrowLeft':
 				if(this.state.playerYcoord - 1 >= 0){ //verify that player coord + 1 does not exit map
 					if((this.state.map[this.state.playerXcoord][this.state.playerYcoord - 1] || 0) === 1){ //verify that player coord + 1 if a walkable tile
 						this.movePlayer(0,-1) //changes state
@@ -80,7 +80,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className='map'>
-				<Map map={this.state.map}/>
+				<Map map={this.state.map} playerCoords={[this.state.playerXcoord, this.state.playerYcoord]}/>
 			</div>
 		)
 	}
