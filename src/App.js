@@ -64,7 +64,6 @@ class App extends React.Component {
 			default:
 				//do nothing
 		}
-		// console.log(`Player coordinates: X: ${this.state.playerXcoord}, Y: ${this.state.playerYcoord}`)
 	}
 
 	movePlayer(x, y){
