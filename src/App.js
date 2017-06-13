@@ -21,7 +21,6 @@ class App extends React.Component {
 		arr[arr.length - 1] = Array(this.props.gridSize || 15).fill(0)
 		arr[1][0] = 0
 		arr[1][arr.length - 1] = 0
-		console.log(arr[0][0])
 		this.setState({
 			map: arr
 		})
