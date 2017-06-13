@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+table{
+	margin: auto;
+}
+
+.square {
+	height: 20px;
+	width: 20px;
+/*	border-style: solid;
+	border-width: 1px;*/
+}
+
+.wall {
+	background-color: gray;
+}
+
+.dungeon {
+	background-color: silver;
+}
+
+.user {
+	background-color: blue;
+}
+
+.enemy {
+	background-color: red;
+}
+
+.item {
+	background-color: yellow;
+}
