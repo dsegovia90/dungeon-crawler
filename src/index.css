@@ -4,6 +4,16 @@ body {
   font-family: sans-serif;
 }
 
+.stats-div{
+	margin: auto;
+	text-align: center;
+}
+
+.stats {
+	display: inline;
+	margin: 0 20px;
+}
+
 table{
 	margin: auto;
 }
