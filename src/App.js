@@ -1,5 +1,6 @@
 import React from 'react';
 import Map from './Map.js'
+import Stats from './Stats.js'
 
 
 class App extends React.Component {
@@ -8,10 +9,18 @@ class App extends React.Component {
 		this.state = {
 			map: Array((this.props.gridSize || 15)).fill(Array((this.props.gridSize || 15)).fill(1)),
 			playerXcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
-			playerYcoord: Math.floor(Math.random()*(this.props.gridSize || 15))
+			playerYcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
+			hp: 100,
+			attack: 10,
+			level: 1, 
+			floor: -1
 		}
 		this.handleKeydown = this.handleKeydown.bind(this)
 		this.movePlayer = this.movePlayer.bind(this)
+	}
+
+	componentWillMount(){
+		window.removeEventListener('keydown', this.handleKeydown)
 	}
 
 	componentDidMount(){
@@ -27,16 +36,14 @@ class App extends React.Component {
 		console.log(this.state.map[0][0])
 	}
 
-	componentWillMount(){
-		window.removeEventListener('keydown', this.handleKeydown)
-	}
-
 	handleKeydown(e){
 		switch(e.code){
 			case 'ArrowDown':
 				if(this.state.playerXcoord + 1 < this.state.map.length){ //verify that player coord + 1 does not exit map
 					if((this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] || 0) === 1){ //verify that player coord + 1 if a walkable tile
 						this.movePlayer(1,0) //changes state
+					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 2){
+						
 					}
 				}
 				break
@@ -75,10 +82,20 @@ class App extends React.Component {
 		})
 	}
 
+	
+
 	render() {
 		return (
-			<div className='map'>
-				<Map map={this.state.map} playerCoords={[this.state.playerXcoord, this.state.playerYcoord]}/>
+			<div>
+				<Stats 
+					hp={this.state.hp} 
+					attack={this.state.attack} 
+					level={this.state.level} 
+					floor={this.state.floor}
+					/>
+				<div className='map'>
+					<Map map={this.state.map} playerCoords={[this.state.playerXcoord, this.state.playerYcoord]}/>
+				</div>
 			</div>
 		)
 	}
