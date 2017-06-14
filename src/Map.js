@@ -15,6 +15,10 @@ class Map extends React.Component {
 			case 1:
 				className += ' dungeon'
 				break;
+			
+			case 2:
+				className += ' enemy'
+				break;
 
 			default:
 				className += ' wall'
