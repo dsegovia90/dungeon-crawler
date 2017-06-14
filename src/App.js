@@ -2,7 +2,6 @@ import React from 'react';
 import Map from './Map.js'
 import Stats from './Stats.js'
 
-
 class App extends React.Component {
 	constructor(props){
 		super(props)
@@ -13,7 +12,7 @@ class App extends React.Component {
 			hp: 100,
 			attack: 10,
 			level: 1, 
-			floor: -1
+			floor: -1,
 		}
 		this.handleKeydown = this.handleKeydown.bind(this)
 		this.movePlayer = this.movePlayer.bind(this)
@@ -33,7 +32,6 @@ class App extends React.Component {
 		this.setState({
 			map: arr
 		})
-		console.log(this.state.map[0][0])
 	}
 
 	handleKeydown(e){
@@ -81,8 +79,6 @@ class App extends React.Component {
 			}
 		})
 	}
-
-	
 
 	render() {
 		return (
