@@ -25,22 +25,31 @@ table{
 	border-width: 1px;*/
 }
 
-.wall {
-	background-color: gray;
-}
-
-.dungeon {
-	background-color: silver;
-}
-
+/*-1*/
 .player {
 	background-color: blue;
 }
-
+/*0*/
+.wall { 
+	background-color: gray;
+}
+/*1*/
+.dungeon {
+	background-color: silver;
+}
+/*2*/
 .enemy {
 	background-color: red;
 }
-
+/*3*/
 .item {
 	background-color: yellow;
+}
+/*4*/
+.health {
+	background-color: green;
+}
+/*5*/
+.manhole {
+	background-color: black;
 }
