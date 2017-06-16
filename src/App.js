@@ -2,26 +2,26 @@ import React from 'react';
 import Map from './Map.js'
 import Stats from './Stats.js'
 
-var arr = [	
-						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-						[0,1,1,2,3,4,5,1,1,1,1,1,1,1,0],
-						[0,1,2,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,3,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,4,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,5,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,2,3,4,5,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-					]
+var arr = [
+	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 1, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]
 
 class App extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.state = {
 			// map: Array((this.props.gridSize || 15)).fill(Array((this.props.gridSize || 15)).fill(1)),
@@ -32,18 +32,18 @@ class App extends React.Component {
 			playerYcoord: 4,
 			hp: 100,
 			attack: 10,
-			level: 1, 
+			level: 1,
 			floor: -1,
 		}
 		this.handleKeydown = this.handleKeydown.bind(this)
 		this.movePlayer = this.movePlayer.bind(this)
 	}
 
-	componentWillMount(){
+	componentWillMount() {
 		window.removeEventListener('keydown', this.handleKeydown)
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		window.addEventListener('keydown', this.handleKeydown)
 		// var arr = this.state.map
 		// arr[0] = Array(this.props.gridSize || 15).fill(0)
@@ -55,8 +55,8 @@ class App extends React.Component {
 		// })
 	}
 
-	turnTileIntoDungeon(x,y){
-		this.setState(function(prevState){
+	turnTileIntoDungeon(x, y) {
+		this.setState(function (prevState) {
 			var newMap = prevState.map
 			newMap[x][y] = 1
 			return {
@@ -65,28 +65,28 @@ class App extends React.Component {
 		})
 	}
 
-	handleKeydown(e){
-		switch(e.code){
+	handleKeydown(e) {
+		switch (e.code) {
 			case 'ArrowDown':
-				if(this.state.playerXcoord + 1 < this.state.map.length){ // check that nextTile does not exit map
+				if (this.state.playerXcoord + 1 < this.state.map.length) { // check that nextTile does not exit map
 					var nextTile = this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord]
-					if((nextTile || 0) === 1){ // dungeon tile
-						this.movePlayer(1,0) //changes state
-					}else if(nextTile === 2){ // enemy tile
-						
-					}else if(nextTile === 3){ // item tile
-						this.setState(function(prevState){
-							return{
+					if ((nextTile || 0) === 1) { // dungeon tile
+						this.movePlayer(1, 0) //changes state
+					} else if (nextTile === 2) { // enemy tile
+
+					} else if (nextTile === 3) { // item tile
+						this.setState(function (prevState) {
+							return {
 								attack: prevState.attack + (prevState.floor * (-1) * 10)
 							}
 						})
 						this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
-						this.movePlayer(1,0)
-					}else if(nextTile === 4){
-						
-					}else if(nextTile === 5){ //-1 on floor
-						this.setState(function(prevState){
-							return{
+						this.movePlayer(1, 0)
+					} else if (nextTile === 4) {
+
+					} else if (nextTile === 5) { //-1 on floor
+						this.setState(function (prevState) {
+							return {
 								floor: prevState.floor - 1
 							}
 						})
@@ -95,33 +95,33 @@ class App extends React.Component {
 				}
 				break
 			case 'ArrowRight':
-				if(this.state.playerYcoord + 1 < this.state.map.length){ //verify that player coord + 1 does not exit map
-					if((this.state.map[this.state.playerXcoord][this.state.playerYcoord + 1] || 0) === 1){ //verify that player coord + 1 if a walkable tile
-						this.movePlayer(0,1) //changes state
+				if (this.state.playerYcoord + 1 < this.state.map.length) { //verify that player coord + 1 does not exit map
+					if ((this.state.map[this.state.playerXcoord][this.state.playerYcoord + 1] || 0) === 1) { //verify that player coord + 1 if a walkable tile
+						this.movePlayer(0, 1) //changes state
 					}
 				}
 				break
 			case 'ArrowUp':
-				if(this.state.playerXcoord - 1 >= 0){ //verify that player coord + 1 does not exit map
-					if((this.state.map[this.state.playerXcoord - 1][this.state.playerYcoord] || 0) === 1){ //verify that player coord + 1 if a walkable tile
-						this.movePlayer(-1,0) //changes state
+				if (this.state.playerXcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
+					if ((this.state.map[this.state.playerXcoord - 1][this.state.playerYcoord] || 0) === 1) { //verify that player coord + 1 if a walkable tile
+						this.movePlayer(-1, 0) //changes state
 					}
 				}
 				break
 			case 'ArrowLeft':
-				if(this.state.playerYcoord - 1 >= 0){ //verify that player coord + 1 does not exit map
-					if((this.state.map[this.state.playerXcoord][this.state.playerYcoord - 1] || 0) === 1){ //verify that player coord + 1 if a walkable tile
-						this.movePlayer(0,-1) //changes state
+				if (this.state.playerYcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
+					if ((this.state.map[this.state.playerXcoord][this.state.playerYcoord - 1] || 0) === 1) { //verify that player coord + 1 if a walkable tile
+						this.movePlayer(0, -1) //changes state
 					}
 				}
 				break
 			default:
-				//do nothing
+			//do nothing
 		}
 	}
 
-	movePlayer(x, y){
-		this.setState(function(prevState){
+	movePlayer(x, y) {
+		this.setState(function (prevState) {
 			return {
 				playerXcoord: prevState.playerXcoord + x,
 				playerYcoord: prevState.playerYcoord + y
@@ -132,14 +132,14 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<Stats 
-					hp={this.state.hp} 
-					attack={this.state.attack} 
-					level={this.state.level} 
+				<Stats
+					hp={this.state.hp}
+					attack={this.state.attack}
+					level={this.state.level}
 					floor={this.state.floor}
-					/>
+				/>
 				<div className='map'>
-					<Map map={this.state.map} playerCoords={[this.state.playerXcoord, this.state.playerYcoord]}/>
+					<Map map={this.state.map} playerCoords={[this.state.playerXcoord, this.state.playerYcoord]} />
 				</div>
 			</div>
 		)
