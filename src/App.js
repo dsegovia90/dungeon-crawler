@@ -36,11 +36,13 @@ class App extends React.Component {
       level: 1,
       floor: -1,
     }
-    this.increaseAttack = this.increaseAttack.bind(this)
-    this.turnTileIntoDungeon = this.turnTileIntoDungeon.bind(this)
+    this.checkNextTile = this.checkNextTile.bind(this)
+    this.decreaseFloor = this.decreaseFloor.bind(this)
     this.handleKeydown = this.handleKeydown.bind(this)
-    this.movePlayer = this.movePlayer.bind(this)
     this.healthPot = this.healthPot.bind(this)
+    this.increaseAttack = this.increaseAttack.bind(this)
+    this.movePlayer = this.movePlayer.bind(this)
+    this.turnTileIntoDungeon = this.turnTileIntoDungeon.bind(this)
   }
 
   componentWillMount() {
@@ -61,7 +63,27 @@ class App extends React.Component {
 
   ///////////////////////////////////////////////////////////////////////////////////
 
-  decreaseFloor(){
+  checkNextTile(x, y) {
+    var nextTile = this.state.map[this.state.playerXcoord + x][this.state.playerYcoord + y]
+    if ((nextTile) === 1) { // dungeon tile
+      this.movePlayer(x, y) //changes state
+    } else if (nextTile === 2) { // enemy tile
+
+    } else if (nextTile === 3) { // item tile
+      this.increaseAttack()
+      this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
+      this.movePlayer(x, y)
+    } else if (nextTile === 4) { // health pot tile
+      this.healthPot()
+      this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
+      this.movePlayer(x, y)
+    } else if (nextTile === 5) { // manhole tile
+      this.movePlayer(x, y)
+      this.decreaseFloor()
+    }
+  }
+
+  decreaseFloor() {
     this.setState(function (prevState) {
       return {
         floor: prevState.floor - 1
@@ -73,47 +95,25 @@ class App extends React.Component {
     switch (e.code) {
       case 'ArrowDown':
         if (this.state.playerXcoord + 1 < this.state.map.length) { // check that nextTile does not exit map
-          var nextTile = this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord]
-          if ((nextTile) === 1) { // dungeon tile
-            this.movePlayer(1, 0) //changes state
-          } else if (nextTile === 2) { // enemy tile
-
-          } else if (nextTile === 3) { // item tile
-            this.increaseAttack()
-            this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
-            this.movePlayer(1, 0)
-          } else if (nextTile === 4) { // health pot tile
-            this.healthPot()
-            this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
-            this.movePlayer(1, 0)
-          } else if (nextTile === 5) { // manhole tile
-            this.decreaseFloor()
-            this.movePlayer(1, 0)
-          }
+          this.checkNextTile(1, 0)
         }
         break
 
       case 'ArrowRight':
         if (this.state.playerYcoord + 1 < this.state.map.length) { //verify that player coord + 1 does not exit map
-          if ((this.state.map[this.state.playerXcoord][this.state.playerYcoord + 1] || 0) === 1) { //verify that player coord + 1 if a walkable tile
-            this.movePlayer(0, 1) //changes state
-          }
+          this.checkNextTile(0, 1)
         }
         break
 
       case 'ArrowUp':
         if (this.state.playerXcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
-          if ((this.state.map[this.state.playerXcoord - 1][this.state.playerYcoord] || 0) === 1) { //verify that player coord + 1 if a walkable tile
-            this.movePlayer(-1, 0) //changes state
-          }
+          this.checkNextTile(-1, 0)
         }
         break
 
       case 'ArrowLeft':
         if (this.state.playerYcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
-          if ((this.state.map[this.state.playerXcoord][this.state.playerYcoord - 1] || 0) === 1) { //verify that player coord + 1 if a walkable tile
-            this.movePlayer(0, -1) //changes state
-          }
+          this.checkNextTile(0, -1)
         }
         break
 
@@ -164,6 +164,7 @@ class App extends React.Component {
       <div>
         <Stats
           hp={this.state.hp}
+          maxHp={this.state.maxHp}
           attack={this.state.attack}
           level={this.state.level}
           floor={this.state.floor}
