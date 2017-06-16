@@ -98,25 +98,21 @@ class App extends React.Component {
           this.checkNextTile(1, 0)
         }
         break
-
       case 'ArrowRight':
         if (this.state.playerYcoord + 1 < this.state.map.length) { //verify that player coord + 1 does not exit map
           this.checkNextTile(0, 1)
         }
         break
-
       case 'ArrowUp':
         if (this.state.playerXcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
           this.checkNextTile(-1, 0)
         }
         break
-
       case 'ArrowLeft':
         if (this.state.playerYcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
           this.checkNextTile(0, -1)
         }
         break
-
       default:
       //do nothing
     }
