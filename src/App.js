@@ -31,13 +31,16 @@ class App extends React.Component {
       // playerYcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
       playerYcoord: 4,
       hp: 100,
-      maxHp: 100,
+      maxHp: 200,
       attack: 10,
       level: 1,
       floor: -1,
     }
+    this.increaseAttack = this.increaseAttack.bind(this)
+    this.turnTileIntoDungeon = this.turnTileIntoDungeon.bind(this)
     this.handleKeydown = this.handleKeydown.bind(this)
     this.movePlayer = this.movePlayer.bind(this)
+    this.healthPot = this.healthPot.bind(this)
   }
 
   componentWillMount() {
@@ -56,12 +59,12 @@ class App extends React.Component {
     // })
   }
 
-  turnTileIntoDungeon(x, y) {
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  decreaseFloor(){
     this.setState(function (prevState) {
-      var newMap = prevState.map
-      newMap[x][y] = 1
       return {
-        map: newMap
+        floor: prevState.floor - 1
       }
     })
   }
@@ -71,38 +74,25 @@ class App extends React.Component {
       case 'ArrowDown':
         if (this.state.playerXcoord + 1 < this.state.map.length) { // check that nextTile does not exit map
           var nextTile = this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord]
-          if ((nextTile || 0) === 1) { // dungeon tile
+          if ((nextTile) === 1) { // dungeon tile
             this.movePlayer(1, 0) //changes state
           } else if (nextTile === 2) { // enemy tile
 
           } else if (nextTile === 3) { // item tile
-            this.setState(function (prevState) {
-              return {
-                attack: prevState.attack + (prevState.floor * (-1) * 10)
-              }
-            })
+            this.increaseAttack()
             this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
             this.movePlayer(1, 0)
           } else if (nextTile === 4) { // health pot tile
-            this.setState(function (prevState) {
-              var newHealth = prevState.hp + (Math.round(prevState.maxHp * 0.25))
-              newHealth = newHealth > prevState.maxHp ? prevState.maxHp : newHealth
-              return {
-                hp: newHealth
-              }
-            })
+            this.healthPot()
             this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
             this.movePlayer(1, 0)
           } else if (nextTile === 5) { // manhole tile
-            this.setState(function (prevState) {
-              return {
-                floor: prevState.floor - 1
-              }
-            })
-            //reset board with new floor
+            this.decreaseFloor()
+            this.movePlayer(1, 0)
           }
         }
         break
+
       case 'ArrowRight':
         if (this.state.playerYcoord + 1 < this.state.map.length) { //verify that player coord + 1 does not exit map
           if ((this.state.map[this.state.playerXcoord][this.state.playerYcoord + 1] || 0) === 1) { //verify that player coord + 1 if a walkable tile
@@ -110,6 +100,7 @@ class App extends React.Component {
           }
         }
         break
+
       case 'ArrowUp':
         if (this.state.playerXcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
           if ((this.state.map[this.state.playerXcoord - 1][this.state.playerYcoord] || 0) === 1) { //verify that player coord + 1 if a walkable tile
@@ -117,6 +108,7 @@ class App extends React.Component {
           }
         }
         break
+
       case 'ArrowLeft':
         if (this.state.playerYcoord - 1 >= 0) { //verify that player coord + 1 does not exit map
           if ((this.state.map[this.state.playerXcoord][this.state.playerYcoord - 1] || 0) === 1) { //verify that player coord + 1 if a walkable tile
@@ -124,9 +116,28 @@ class App extends React.Component {
           }
         }
         break
+
       default:
       //do nothing
     }
+  }
+
+  healthPot() {
+    this.setState(function (prevState) {
+      var newHealth = prevState.hp + (Math.round(prevState.maxHp * 0.25))
+      newHealth = newHealth > prevState.maxHp ? prevState.maxHp : newHealth
+      return {
+        hp: newHealth
+      }
+    })
+  }
+
+  increaseAttack() {
+    this.setState(function (prevState) {
+      return {
+        attack: prevState.attack + (prevState.floor * (-1) * 10)
+      }
+    })
   }
 
   movePlayer(x, y) {
@@ -134,6 +145,16 @@ class App extends React.Component {
       return {
         playerXcoord: prevState.playerXcoord + x,
         playerYcoord: prevState.playerYcoord + y
+      }
+    })
+  }
+
+  turnTileIntoDungeon(x, y) {
+    this.setState(function (prevState) {
+      var newMap = prevState.map
+      newMap[x][y] = 1
+      return {
+        map: newMap
       }
     })
   }
