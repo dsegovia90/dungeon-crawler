@@ -2,13 +2,34 @@ import React from 'react';
 import Map from './Map.js'
 import Stats from './Stats.js'
 
+var arr = [	
+						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+						[0,1,1,2,3,4,5,1,1,1,1,1,1,1,0],
+						[0,1,2,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,3,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,4,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,5,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,2,3,4,5,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+						[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					]
+
 class App extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			map: Array((this.props.gridSize || 15)).fill(Array((this.props.gridSize || 15)).fill(1)),
-			playerXcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
-			playerYcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
+			// map: Array((this.props.gridSize || 15)).fill(Array((this.props.gridSize || 15)).fill(1)),
+			map: arr,
+			// playerXcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
+			playerXcoord: 4,
+			// playerYcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
+			playerYcoord: 4,
 			hp: 100,
 			attack: 10,
 			level: 1, 
@@ -24,13 +45,23 @@ class App extends React.Component {
 
 	componentDidMount(){
 		window.addEventListener('keydown', this.handleKeydown)
-		var arr = this.state.map
-		arr[0] = Array(this.props.gridSize || 15).fill(0)
-		arr[arr.length - 1] = Array(this.props.gridSize || 15).fill(0)
-		arr[1][0] = 0
-		arr[1][arr.length - 1] = 0
-		this.setState({
-			map: arr
+		// var arr = this.state.map
+		// arr[0] = Array(this.props.gridSize || 15).fill(0)
+		// arr[arr.length - 1] = Array(this.props.gridSize || 15).fill(0)
+		// arr[1][0] = 0
+		// arr[1][arr.length - 1] = 0
+		// this.setState({
+		// 	map: arr
+		// })
+	}
+
+	turnTileIntoDungeon(x,y){
+		this.setState(function(prevState){
+			var newMap = prevState.map
+			newMap[x][y] = 1
+			return {
+				map: newMap
+			}
 		})
 	}
 
@@ -42,6 +73,22 @@ class App extends React.Component {
 						this.movePlayer(1,0) //changes state
 					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 2){
 						
+					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 3){ // plus attack
+						this.setState(function(prevState){
+							return{
+								attack: prevState.attack + (prevState.floor * (-1) * 10)
+							}
+						})
+						this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
+					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 4){
+						
+					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 5){ //-1 on floor
+						this.setState(function(prevState){
+							return{
+								floor: prevState.floor - 1
+							}
+						})
+						//reset board with new floor
 					}
 				}
 				break
