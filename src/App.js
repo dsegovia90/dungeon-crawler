@@ -68,21 +68,23 @@ class App extends React.Component {
 	handleKeydown(e){
 		switch(e.code){
 			case 'ArrowDown':
-				if(this.state.playerXcoord + 1 < this.state.map.length){ //verify that player coord + 1 does not exit map
-					if((this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] || 0) === 1){ //verify that player coord + 1 if a walkable tile
+				if(this.state.playerXcoord + 1 < this.state.map.length){ // check that nextTile does not exit map
+					var nextTile = this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord]
+					if((nextTile || 0) === 1){ // dungeon tile
 						this.movePlayer(1,0) //changes state
-					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 2){
+					}else if(nextTile === 2){ // enemy tile
 						
-					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 3){ // plus attack
+					}else if(nextTile === 3){ // item tile
 						this.setState(function(prevState){
 							return{
 								attack: prevState.attack + (prevState.floor * (-1) * 10)
 							}
 						})
 						this.turnTileIntoDungeon(this.state.playerXcoord + 1, this.state.playerYcoord)
-					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 4){
+						this.movePlayer(1,0)
+					}else if(nextTile === 4){
 						
-					}else if(this.state.map[this.state.playerXcoord + 1][this.state.playerYcoord] === 5){ //-1 on floor
+					}else if(nextTile === 5){ //-1 on floor
 						this.setState(function(prevState){
 							return{
 								floor: prevState.floor - 1
