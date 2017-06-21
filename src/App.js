@@ -103,21 +103,21 @@ class App extends React.Component {
       var enemyToAttack = 'enemy' + (nextTile - 4)
       var enemyHpAfterAttack = this.state.enemies[enemyToAttack].hp - this.state.attack
       if (enemyHpAfterAttack <= 0) {
-        this.exchangeAttacks(enemyToAttack, 0)
+        this.exchangeAttacks(enemyToAttack, 0, 0)
         this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
         this.movePlayer(x, y)
       } else {
-        this.exchangeAttacks(enemyToAttack, enemyHpAfterAttack)
+        this.exchangeAttacks(enemyToAttack, enemyHpAfterAttack, this.state.floor * 15)
       }
     }
   }
   
-  exchangeAttacks(enemyToAttack, newEnemyHp){    
+  exchangeAttacks(enemyToAttack, newEnemyHp, enemyAttack){    
     this.setState(function(prevState){
       var tempEnemies = prevState.enemies
       tempEnemies[enemyToAttack].hp = newEnemyHp
       return {
-        hp: prevState.hp + (this.state.floor * 15),
+        hp: prevState.hp + enemyAttack,
         enemies: tempEnemies
       }
     })
