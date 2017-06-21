@@ -2,7 +2,7 @@ import React from 'react';
 import Map from './Map.js'
 import Stats from './Stats.js'
 
-var arr = [
+const arr = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 1, 1, 1, 1, 1, 5, 6, 7, 8, 9, 1, 1, 1, 0],
   [0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -24,11 +24,8 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      // map: Array((this.props.gridSize || 15)).fill(Array((this.props.gridSize || 15)).fill(1)),
-      map: arr,
-      // playerXcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
+      map: Array.from(arr),
       playerXcoord: 4,
-      // playerYcoord: Math.floor(Math.random()*(this.props.gridSize || 15)),
       playerYcoord: 4,
       hp: 100,
       maxHp: 200,
@@ -56,13 +53,14 @@ class App extends React.Component {
         }
       }
     }
-    this.exchangeAttacks = this.exchangeAttacks.bind(this)
     this.checkNextTile = this.checkNextTile.bind(this)
     this.decreaseFloor = this.decreaseFloor.bind(this)
+    this.exchangeAttacks = this.exchangeAttacks.bind(this)
     this.handleKeydown = this.handleKeydown.bind(this)
     this.healthPot = this.healthPot.bind(this)
     this.increaseAttack = this.increaseAttack.bind(this)
     this.movePlayer = this.movePlayer.bind(this)
+    this.resetGame = this.resetGame.bind(this)
     this.turnTileIntoDungeon = this.turnTileIntoDungeon.bind(this)
   }
 
@@ -72,14 +70,6 @@ class App extends React.Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeydown)
-    // var arr = this.state.map
-    // arr[0] = Array(this.props.gridSize || 15).fill(0)
-    // arr[arr.length - 1] = Array(this.props.gridSize || 15).fill(0)
-    // arr[1][0] = 0
-    // arr[1][arr.length - 1] = 0
-    // this.setState({
-    // 	map: arr
-    // })
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
@@ -112,8 +102,39 @@ class App extends React.Component {
     }
   }
   
-  exchangeAttacks(enemyToAttack, newEnemyHp, enemyAttack){    
-    this.setState(function(prevState){
+  decreaseFloor() {
+    this.setState(function (prevState) {
+      return {
+        map: Array.from(arr), 
+        playerXcoord: 4,
+        playerYcoord: 4,
+        floor: prevState.floor - 1,
+        enemies: {
+          enemy1: {
+            hp: 25
+          },
+          enemy2: {
+            hp: 25
+          },
+          enemy3: {
+            hp: 25
+          },
+          enemy4: {
+            hp: 25
+          },
+          enemy5: {
+            hp: 25
+          },
+          enemy6: {
+            hp: 25
+          }
+        }
+      }
+    })
+  }
+
+  exchangeAttacks(enemyToAttack, newEnemyHp, enemyAttack) {
+    this.setState(function (prevState) {
       var tempEnemies = prevState.enemies
       tempEnemies[enemyToAttack].hp = newEnemyHp
       return {
@@ -121,14 +142,10 @@ class App extends React.Component {
         enemies: tempEnemies
       }
     })
-  }
-
-  decreaseFloor() {
-    this.setState(function (prevState) {
-      return {
-        floor: prevState.floor - 1
-      }
-    })
+    if (this.state.hp < 0) {
+      window.alert('You died! Start over?')
+      this.resetGame()
+    }
   }
 
   handleKeydown(e) {
@@ -181,6 +198,39 @@ class App extends React.Component {
       return {
         playerXcoord: prevState.playerXcoord + x,
         playerYcoord: prevState.playerYcoord + y
+      }
+    })
+  }
+
+  resetGame() {
+    this.setState({
+      map: Array.from(arr),
+      playerXcoord: 4,
+      playerYcoord: 4,
+      hp: 100,
+      maxHp: 200,
+      attack: 10,
+      level: 1,
+      floor: -1,
+      enemies: {
+        enemy1: {
+          hp: 25
+        },
+        enemy2: {
+          hp: 25
+        },
+        enemy3: {
+          hp: 25
+        },
+        enemy4: {
+          hp: 25
+        },
+        enemy5: {
+          hp: 25
+        },
+        enemy6: {
+          hp: 25
+        }
       }
     })
   }
