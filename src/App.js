@@ -84,17 +84,6 @@ class App extends React.Component {
 
   ///////////////////////////////////////////////////////////////////////////////////
 
-  exchangeAttacks(enemyToAttack, newEnemyHp){    
-    this.setState(function(prevState){
-      var tempEnemies = prevState.enemies
-      tempEnemies[enemyToAttack].hp = newEnemyHp
-      return {
-        hp: prevState.hp + (this.state.floor * 15),
-        enemies: tempEnemies
-      }
-    })
-  }
-
   checkNextTile(x, y) {
     var nextTile = this.state.map[this.state.playerXcoord + x][this.state.playerYcoord + y]
     if ((nextTile) === 1) { // dungeon tile
@@ -121,6 +110,17 @@ class App extends React.Component {
         this.exchangeAttacks(enemyToAttack, enemyHpAfterAttack)
       }
     }
+  }
+  
+  exchangeAttacks(enemyToAttack, newEnemyHp){    
+    this.setState(function(prevState){
+      var tempEnemies = prevState.enemies
+      tempEnemies[enemyToAttack].hp = newEnemyHp
+      return {
+        hp: prevState.hp + (this.state.floor * 15),
+        enemies: tempEnemies
+      }
+    })
   }
 
   decreaseFloor() {
