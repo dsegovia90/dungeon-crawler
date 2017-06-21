@@ -4,12 +4,12 @@ import Stats from './Stats.js'
 
 var arr = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 1, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 1, 1, 1, 1, 1, 5, 6, 7, 8, 9, 1, 1, 1, 0],
   [0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-  [0, 1, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-  [0, 1, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 1, 1, 2, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -35,7 +35,28 @@ class App extends React.Component {
       attack: 10,
       level: 1,
       floor: -1,
+      enemies: {
+        enemy1: {
+          hp: 25
+        },
+        enemy2: {
+          hp: 25
+        },
+        enemy3: {
+          hp: 25
+        },
+        enemy4: {
+          hp: 25
+        },
+        enemy5: {
+          hp: 25
+        },
+        enemy6: {
+          hp: 25
+        }
+      }
     }
+    this.exchangeAttacks = this.exchangeAttacks.bind(this)
     this.checkNextTile = this.checkNextTile.bind(this)
     this.decreaseFloor = this.decreaseFloor.bind(this)
     this.handleKeydown = this.handleKeydown.bind(this)
@@ -63,12 +84,24 @@ class App extends React.Component {
 
   ///////////////////////////////////////////////////////////////////////////////////
 
+  exchangeAttacks(enemyToAttack, newEnemyHp){    
+    this.setState(function(prevState){
+      var tempEnemies = prevState.enemies
+      tempEnemies[enemyToAttack].hp = newEnemyHp
+      return {
+        hp: prevState.hp + (this.state.floor * 15),
+        enemies: tempEnemies
+      }
+    })
+  }
+
   checkNextTile(x, y) {
     var nextTile = this.state.map[this.state.playerXcoord + x][this.state.playerYcoord + y]
     if ((nextTile) === 1) { // dungeon tile
       this.movePlayer(x, y) //changes state
-    } else if (nextTile === 2) { // enemy tile
-
+    } else if (nextTile === 2) { // manhole tile
+      this.movePlayer(x, y)
+      this.decreaseFloor()
     } else if (nextTile === 3) { // item tile
       this.increaseAttack()
       this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
@@ -77,9 +110,16 @@ class App extends React.Component {
       this.healthPot()
       this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
       this.movePlayer(x, y)
-    } else if (nextTile === 5) { // manhole tile
-      this.movePlayer(x, y)
-      this.decreaseFloor()
+    } else if (nextTile >= 5) { // enemy tile
+      var enemyToAttack = 'enemy' + (nextTile - 4)
+      var enemyHpAfterAttack = this.state.enemies[enemyToAttack].hp - this.state.attack
+      if (enemyHpAfterAttack <= 0) {
+        this.exchangeAttacks(enemyToAttack, 0)
+        this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
+        this.movePlayer(x, y)
+      } else {
+        this.exchangeAttacks(enemyToAttack, enemyHpAfterAttack)
+      }
     }
   }
 
