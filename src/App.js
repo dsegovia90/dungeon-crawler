@@ -77,7 +77,9 @@ class App extends React.Component {
 
   checkExperience() {
     this.setState(function (prevState) {
-      this.level = Math.floor(prevState.experience/100) + 1
+      return {
+        level: Math.floor(prevState.experience/100) + 1
+      }
     })
   }
 
