@@ -7,6 +7,7 @@ function Stats(props){
         <h3 className='stats'>HP: {props.hp}/{props.maxHp}</h3>
         <h3 className='stats'>Attack: {props.attack}</h3>
         <h3 className='stats'>Lvl: {props.level}</h3>
+        <h3 className='stats'>Experience: {props.experience}</h3>
         <h3 className='stats'>Floor: {props.floor}</h3>
       </div>
       <br />
