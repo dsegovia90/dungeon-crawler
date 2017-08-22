@@ -29,6 +29,7 @@ class App extends React.Component {
       maxHp: 200,
       attack: 10,
       level: 1,
+      experience: 0,
       floor: -1,
       enemies: {
         enemy1: {
@@ -57,6 +58,7 @@ class App extends React.Component {
     this.handleKeydown = this.handleKeydown.bind(this)
     this.healthPot = this.healthPot.bind(this)
     this.increaseAttack = this.increaseAttack.bind(this)
+    this.increaseExperience = this.increaseExperience.bind(this)
     this.movePlayer = this.movePlayer.bind(this)
     this.resetGame = this.resetGame.bind(this)
     this.turnTileIntoDungeon = this.turnTileIntoDungeon.bind(this)
@@ -71,6 +73,12 @@ class App extends React.Component {
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
+
+  checkExperience() {
+    this.setState(function (prevState) {
+      this.level = Math.floor(prevState.experience/100) + 1
+    })
+  }
 
   checkNextTile(x, y) {
     var nextTile = this.state.map[this.state.playerXcoord + x][this.state.playerYcoord + y]
@@ -92,6 +100,7 @@ class App extends React.Component {
       var enemyHpAfterAttack = this.state.enemies[enemyToAttack].hp - this.state.attack
       if (enemyHpAfterAttack <= 0) {
         this.exchangeAttacks(enemyToAttack, 0, 0)
+        this.increaseExperience()
         this.turnTileIntoDungeon(this.state.playerXcoord + x, this.state.playerYcoord + y)
         this.movePlayer(x, y)
       } else {
@@ -207,6 +216,15 @@ class App extends React.Component {
     })
   }
 
+  increaseExperience() {
+    this.setState(function (prevState) {
+      return {
+        experience: prevState.experience + 25
+      }
+    })
+    this.checkExperience()
+  }
+
   movePlayer(x, y) {
     this.setState(function (prevState) {
       return {
@@ -241,6 +259,7 @@ class App extends React.Component {
       maxHp: 200,
       attack: 10,
       level: 1,
+      experience: 0,
       floor: -1,
       enemies: {
         enemy1: {
@@ -283,6 +302,7 @@ class App extends React.Component {
           maxHp={this.state.maxHp}
           attack={this.state.attack}
           level={this.state.level}
+          experience={this.state.experience}
           floor={this.state.floor}
         />
         <div className='map'>
