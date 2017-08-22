@@ -52,6 +52,7 @@ class App extends React.Component {
         }
       }
     }
+    this.checkExperience = this.checkExperience.bind(this)
     this.checkNextTile = this.checkNextTile.bind(this)
     this.decreaseFloor = this.decreaseFloor.bind(this)
     this.exchangeAttacks = this.exchangeAttacks.bind(this)
